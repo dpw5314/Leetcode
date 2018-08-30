@@ -152,6 +152,31 @@ public:
     }
 };
 
+
+
+class Solution {
+unordered_map<int, UndirectedGraphNode*> map;
+    
+public:
+    
+    UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
+        if(node == nullptr)
+            return node;
+        
+        if(map.find(node->label) != map.end())
+            return map[node->label];
+        
+        UndirectedGraphNode* node1 = new UndirectedGraphNode(node->label);
+        map[node->label] = node1;
+        for(int i = 0; i<node->neighbors.size(); ++i){
+            node1->neighbors.push_back(cloneGraph(node->neighbors[i]));
+        }
+        return node1;
+    }
+};
+
+
+
 int main(){
 	//vector<int> a = {1,1};
 	UndirectedGraphNode* head = new UndirectedGraphNode(0);
