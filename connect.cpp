@@ -160,6 +160,35 @@ public:
         return ans;
     }
 
+
+//27
+class Solution {
+public:
+    void connect(TreeLinkNode *root) {
+        if(!root)
+            return;
+        TreeLinkNode* dummy;
+        queue<TreeLinkNode*> q;
+        q.push(root);
+        queue<TreeLinkNode*> temp;
+        while(!q.empty()){
+            queue<TreeLinkNode*> temp;
+            while(!q.empty()){
+                dummy = q.front();
+                q.pop();
+                if(!q.empty())
+                    dummy->next = q.front();
+                if(dummy->left)
+                    temp.push(dummy->left);
+                if(dummy->right)
+                    temp.push(dummy->right);
+            }
+            swap(temp, q);
+        }
+    }
+};
+
+
 int main(){
   	vector<vector<int>> vec =     {{2},
   								   {3,4},
