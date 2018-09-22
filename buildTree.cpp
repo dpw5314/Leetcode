@@ -160,6 +160,62 @@ struct ListNode {
         return ans;
     }
 
+
+//33
+class Solution {
+public:
+    unordered_map<int, int> map;
+    vector<int> post;
+    
+    TreeNode* build(int low, int high, int& bound){
+        if(high < low || bound < 0)
+            return nullptr;
+        int num = map[post[bound]];
+        TreeNode* root = new TreeNode(post[bound--]);
+        
+        root->right = build(num+1, high, bound);
+        root->left = build(low, num-1, bound);
+        
+        return root;
+    }
+    
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+
+        for(int i = 0; i<inorder.size(); ++i){
+            map[inorder[i]] = i;
+        }
+        post = postorder;
+        int size = post.size()-1;
+        return build(0, size, size);
+    }
+};
+
+
+//69
+class Solution {
+public:
+    
+    TreeNode* build(vector<int>& in, vector<int>& post, int low, int high, int& bound){
+        if(high < low)
+            return nullptr;
+        int num;
+        for(int i = low; i<= high; ++i){
+            if(in[i] == post[bound])
+                num = i;
+        }
+        TreeNode* root = new TreeNode(post[bound--]);
+        
+        root->right = build(in, post, num+1, high, bound);
+        root->left = build(in, post, low, num-1, bound);
+        
+        return root;
+    }
+    
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        int size = postorder.size()-1;
+        return build(inorder, postorder, 0, size, size);
+    }
+};
 int main(){
 	vector<int> vec = {3,3,3,3,5,5,5,7,7,7,0,1,1,2,2};
   //{3,1};
