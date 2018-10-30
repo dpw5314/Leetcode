@@ -84,47 +84,39 @@ struct ListNode {
     }
 */
 
-  //100
+//99.13
   class Solution {
 public:
-    void sortColors(vector<int>& nums) {
-        int notZero, notTwo;
-        notZero = 0, notTwo = nums.size()-1;
+    bool isBipartite(vector<vector<int>>& graph) {
+        vector<int> visited(graph.size());
         
-        while(nums[notZero] == 0)
-            notZero++;    
-        
-        
-        while(nums[notTwo] == 2)
-            notTwo--;
-        
-
-        for(int i = notZero; i<= notTwo; ++i){
-            if(nums[i] == 0)
-                swap(nums[i], nums[notZero++]);
-            else if(nums[i] == 2)
-                swap(nums[i--], nums[notTwo--]);
+        for(int i = 0; i<graph.size(); ++i){
+            if(graph[i].size() != 0 && visited[i] == 0){
+                visited[i] = 1;
+                queue<int> que;
+                que.push(i);
+                while(!que.empty()){
+                    int current = que.front();
+                    int nextColor = visited[current] == 1 ? 2 : 1;
+                    
+                    for(int next : graph[current]){
+                        if(visited[next] == 0){
+                            visited[next] = nextColor;
+                            que.push(next);
+                        }
+                        else{
+                            if(visited[next] != nextColor)
+                                return false;
+                        }
+                    }
+                    que.pop();
+                }
+            }
         }
+
+        return true;
     }
 };
-void sortColors(vector<int>& nums) {
-        int size = nums.size();
-        int index = 0, steps = 0;
-        while(steps < size){
-            if(nums[index] == 0) {
-                nums.erase(nums.begin() + index);
-                nums.insert(nums.begin(), 0);
-                index++;
-            }
-            else if(nums[index] == 1) index++;
-            else{
-                nums.erase(nums.begin() + index);
-                nums.push_back(2); 
-            }
-                
-            steps++;
-        }
-    }
 
 int main(){
 	vector<int> input = {{0,1,2,2,0,2,1,0,2,0,1,1,1,2,2,1}};
